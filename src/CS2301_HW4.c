@@ -17,7 +17,7 @@
 
 
 int main(int argc, char* argv[]) {
-	puts("!!!Let's do  HW3!!!"); /* prints !!!Hello World!!! */
+	puts("!!!Let's do  HW4!!!"); /* prints !!!Hello World!!! */
 	srand(time(0));
 	if(tests())
 	{

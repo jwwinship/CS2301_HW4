@@ -14,15 +14,13 @@
 bool tests()
 {
 	bool answer = false;
-	bool ok1 = testInitBingoCard();
-	bool ok2 = testPrintList();
-	bool ok3 = testCallBall();
+    bool ok1 = testReadFile();
 	//bool ok3 = testMakeLList();
 	//bool ok4 = testEnqueue();
 	//bool ok5 = testRemoveFromList();
 	//bool ok6 = testPrintHistory();
-	answer = ok1 && ok2 && ok3;
-	return answer;
+	answer = ok1;
+	return false; //Failing tests for now so production doesn't run //TODO: Change this back
 }
 
 
@@ -146,5 +144,48 @@ bool testCallBall()
     {
         puts("Test CallBall failed\n");
     }
+    return ok;
+}
+
+bool testReadFile()
+{
+    puts("starting testReadFile"); fflush(stdout);
+    bool ok = false;
+    //the file tells how many rooms there are
+    int answer = -1;
+    int rightAnswer = 8;
+
+
+    AdjMat* adjMP = (AdjMat*) malloc(sizeof(AdjMat));
+    Room* theRoomPs[10];//addresses for 10 rooms
+
+
+    ok = readFile("houseGraph.txt", &answer, adjMP, theRoomPs); //read the file
+    if(ok)
+    {
+        if(answer!=rightAnswer)
+        {
+            puts("test failed on number of rooms");
+        }
+
+    }
+    puts("The adjacency matrix");
+    for(int i = 0; i<answer; i++)
+    {
+        for(int j = 0; j<answer; j++)
+        {
+            int edge = getEdge(adjMP, i, j);
+            printf("%d ",edge);
+
+        }
+        printf("\n");
+    }
+    puts("The treasure values");
+    for(int i = 0; i<answer; i++)
+    {
+        printf("%f\n", theRoomPs[i]->treasure);
+    }
+
+    //fclose();
     return ok;
 }

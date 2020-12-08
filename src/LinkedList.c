@@ -19,6 +19,15 @@ bool isEmpty(LLNode* lp)
     }
     return ans;
 }
+bool isEmpty2(LLNode2* lp)
+{
+    bool ans = false;
+    if(lp->payP == (Payload2*)0)
+    {
+        ans = true;
+    }
+    return ans;
+}
 
 
 LLNode* makeEmptyLinkedList()
@@ -30,6 +39,16 @@ LLNode* makeEmptyLinkedList()
 
     return lp;
 }
+LLNode2* makeEmptyLinkedList2()
+{
+    LLNode2* lp = (LLNode2*) malloc(sizeof(LLNode2));
+    lp->next = (struct LLNode2*)0;
+    lp->prev = (struct LLNode2*)0;
+    lp->payP = (Payload2*)0;
+
+    return lp;
+}
+
 
 void savePayload(LLNode* lp, Payload* mp)
 {
@@ -57,6 +76,34 @@ void savePayload(LLNode* lp, Payload* mp)
         newList->payP = mp;
         temp->next = (struct LLNode*)newList;
         newList->prev = (struct LLNode*) temp;
+    }
+}
+
+void savePayload2(LLNode2* lp, Payload2* mp)
+{
+    //if the list is empty, then make payP be mp
+    //else traverse the list,
+    //make a new list element
+    //put mp in that
+    //attach the new list element to the existing list
+    if(isEmpty2(lp))
+    {
+        lp->payP = mp;
+    }
+    else
+    {
+        LLNode2* temp = lp;
+        while(temp->next)
+        {
+            temp=(LLNode2*)temp->next;
+        }
+        //now temp points to the last element
+
+        //make a new element, attach mp to it, wire up the new element
+        LLNode2* newList = makeEmptyLinkedList2();
+        newList->payP = mp;
+        temp->next = (struct LLNode2*) newList;
+        newList->prev = (struct LLNode2*) temp;
     }
 }
 
@@ -119,6 +166,33 @@ backFromDQFIFO* dequeueFIFO(LLNode* lp)
     }
 
     return fp;
+}
+
+void printHistory(LLNode2* hp)
+{
+    puts("Printing history");
+    if(hp->payP ==(Payload2*)0)
+    {
+        puts("Empty list");
+    }
+    else
+    {
+        //traverse the list, printing as we go
+        float treasureSubtotal = 0.0;
+        int room = -1;
+        LLNode2* temp = hp;
+        while(temp->next)
+        {
+            room =temp->payP->roomNumber;
+            treasureSubtotal+= temp->payP->treasure;
+            printf("The room was %d, and the treasure subtotal was %f.\n", room, treasureSubtotal);
+            //TODO: what goes here?
+
+        }
+        room =temp->payP->roomNumber;
+        treasureSubtotal+= temp->payP->treasure;
+        printf("The room was %d, and the treasure subtotal was %f.\n", room, treasureSubtotal);
+    }
 }
 
 LLNode* removeFromList(LLNode* hP, Payload* pP)

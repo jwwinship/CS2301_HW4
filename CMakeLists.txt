@@ -13,4 +13,4 @@ add_executable(CS2301_HW4
         src/production.h
         src/tests.c
         src/tests.h
-        src/TMSName.h src/BingoCard.c src/BingoCard.h src/marker.c src/marker.h)
+        src/TMSName.h src/BingoCard.c src/BingoCard.h src/marker.c src/marker.h src/AdjMat.c src/AdjMat.h src/Room.c src/Room.h)
