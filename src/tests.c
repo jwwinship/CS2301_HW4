@@ -21,7 +21,7 @@ bool tests()
 	bool ok5 = testGetEdge();
 	bool ok6 = testDequeue();
 	bool ok7 = testPrintHistory();
-	answer = ok1 && ok2 && ok3 && ok4 && ok5 && ok6;
+	answer = ok1 && ok2 && ok3 && ok4 && ok5 && ok6 && ok7;
 	return answer;
 }
 
@@ -63,6 +63,7 @@ bool testGotAdjacencyMatrix()
 
 bool testSetEdge()
 {
+
     bool ans = true;
     puts("Testing SetEdge...");
     int ncols = 8;
@@ -211,9 +212,19 @@ bool testMakeLList() //Tests the making of a list and the enqueue behavior.
 	return ok;
 }
 
-bool testPrintHistory()
+bool testPrintHistory() //Visual test. If the following list of search results is printed, the test is a success.
 {
 	bool ok = true;
+	puts ("Testing PrintHistory...");
+	LLNode2* historyListP = makeEmptyLinkedList2();
+	for(int i = 0; i<5; i++)
+    {
+	    SearchResults* tempResultsP= malloc(sizeof(SearchResults));
+	    tempResultsP->roomNumber = i;
+	    tempResultsP->treasure = (float) i*20;
+	    savePayload2(historyListP, tempResultsP);
+    }
+	printHistory(historyListP);
 	return ok;
 }
 
