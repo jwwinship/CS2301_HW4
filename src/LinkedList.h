@@ -52,8 +52,8 @@ backFromDQFIFO* dequeueFIFO(LLNode* lp);
 void printHistory(LLNode2* hp);
 
 
-//These functions added by John Winship, to expand functionality of the lists.
-void printList(LLNode* lp);
+
+
 
 
 #endif /* LINKEDLIST_H_ */
