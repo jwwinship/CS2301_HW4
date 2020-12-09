@@ -22,6 +22,7 @@ int main(int argc, char* argv[]) {
 	if(tests())
 	{
 	    puts ("All tests passed");
+	    puts ("----------------------------");
 		puts("About to run production.");
 		production(argc, argv);
 	}

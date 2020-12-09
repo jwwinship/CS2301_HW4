@@ -16,12 +16,11 @@ bool tests();
 bool testReadFile();
 bool testGotAdjacencyMatrix();
 bool testMakeLList();
-bool testEnqueue();
-bool testRemoveFromList();
+bool testSetEdge();
+bool testGetEdge();
+bool testDequeue();
 bool testPrintHistory();
-bool testInitBingoCard();
-bool testPrintList();
-bool testCallBall();
+
 
 
 #endif /* TESTS_H_ */

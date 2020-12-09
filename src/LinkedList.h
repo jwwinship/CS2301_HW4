@@ -9,7 +9,7 @@
 #define LINKEDLIST_H_
 
 #include <stdbool.h>
-#include "marker.h"
+
 #include "Room.h"
 #include "AdjMat.h"
 
@@ -42,6 +42,7 @@ typedef struct
 
 LLNode* makeEmptyLinkedList();
 LLNode2* makeEmptyLinkedList2();
+
 LLNode* removeFromList(LLNode* hp, Payload* pP);
 void savePayload(LLNode* lp, Payload* mp);
 void savePayload2(LLNode2* lp, Payload2* mp);

@@ -33,9 +33,10 @@ bool isEmpty2(LLNode2* lp)
 LLNode* makeEmptyLinkedList()
 {
     LLNode* lp = (LLNode*) malloc(sizeof(LLNode));
+
     lp->next = (struct LLNode*)0;
     lp->prev = (struct LLNode*)0;
-    lp->payP = (Payload*)0;
+    lp->payP = (Payload*)0; //Should fail test, as list is not empty on creation.
 
     return lp;
 }
@@ -72,6 +73,7 @@ void savePayload(LLNode* lp, Payload* mp)
         //now temp points to the last element
 
         //make a new element, attach mp to it, wire up the new element
+
         LLNode* newList = makeEmptyLinkedList();
         newList->payP = mp;
         temp->next = (struct LLNode*)newList;
@@ -120,11 +122,11 @@ Payload* dequeueLIFO(LLNode* lp)
         LLNode* temp = lp;
         while(temp->next)
         {
-            temp=(LLNode*)temp->next;
+            temp=(LLNode*)temp->next;   
         }
         //now temp points to the last element
 
-
+        
         payP = temp->payP;
         temp->payP = (Payload*)0;
 
@@ -132,7 +134,7 @@ Payload* dequeueLIFO(LLNode* lp)
         if(temp->prev)
         {
             temp=(LLNode*)temp->prev;
-            //free(temp->next);
+            free(temp->next); //TODO: See if this breaks anything
 
             temp->next = (struct LLNode*)0;
         }
@@ -178,7 +180,7 @@ void printHistory(LLNode2* hp)
     else
     {
         //traverse the list, printing as we go
-        float treasureSubtotal = 0.0;
+        float treasureSubtotal = 0.0F;
         int room = -1;
         LLNode2* temp = hp;
         while(temp->next)
@@ -186,7 +188,7 @@ void printHistory(LLNode2* hp)
             room =temp->payP->roomNumber;
             treasureSubtotal+= temp->payP->treasure;
             printf("The room was %d, and the treasure subtotal was %f.\n", room, treasureSubtotal);
-            //TODO: what goes here?
+            temp = temp->next;
 
         }
         room =temp->payP->roomNumber;
@@ -195,6 +197,7 @@ void printHistory(LLNode2* hp)
     }
 }
 
+//Unused function, left in for futureproofing
 LLNode* removeFromList(LLNode* hP, Payload* pP)
 {
     LLNode* retHead = hP;//only changes if first element gets removed
@@ -279,57 +282,6 @@ LLNode* removeFromList(LLNode* hP, Payload* pP)
     return retHead;
 }
 
-//Function added to print out entire list.
-//TODO: finish this
-void printList(LLNode* lp)
-{
-    puts("Printing the current state of the bingo board....");
-    if (!isEmpty(lp))
-    {
-        Marker* currentMarker = lp->payP;
-
-        if (currentMarker->col >=0 && currentMarker->col <=20 && currentMarker->row >=0 && currentMarker->row <=20)
-        {
-            printf("Bingo ball %c%d called, located at (%d,%d). \n", currentMarker->letter, currentMarker->number, currentMarker->col, currentMarker->row); //Print out the last item in list, because our while loop won't do that.
-
-        }
-        else
-        {
-            printf("Bingo ball %c%d called, no match found! \n", currentMarker->letter, currentMarker->number); //Print out the last item in list, because our while loop won't do that.
-
-        }
-
-
-
-        while (lp->next)
-        {
-            if (lp->next)
-            {
-                lp = (LLNode*) lp->next;
-            }
-            currentMarker = lp->payP;
-
-            if (currentMarker->col >=0 && currentMarker->col <=20 && currentMarker->row >=0 && currentMarker->row <=20)
-            {
-                printf("Bingo ball %c%d called, located at (%d,%d). \n", currentMarker->letter, currentMarker->number, currentMarker->col, currentMarker->row); //Print out the last item in list, because our while loop won't do that.
-
-            }
-            else
-            {
-                printf("Bingo ball %c%d called, no match found! \n", currentMarker->letter, currentMarker->number); //Print out the last item in list, because our while loop won't do that.
-
-            }
-
-        }
-
-
-    }
-    else
-    {
-        printf("The list is empty!\n\n");
-    }
-    puts("------------------------------------------");
-}
 
 
 

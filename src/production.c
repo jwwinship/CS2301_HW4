@@ -25,9 +25,31 @@ bool production(int argc, char* argv[])
         char filename[FILENAMELENGTHALLOWANCE];
         char* eptr=(char*) malloc(sizeof(char*));
         long aL=-1L;
-        int maxRooms;
-        float maxTreasure;
-        double maxTreas;
+        int maxRooms = 0;
+        float maxTreasure = 0.0F;
+        double maxTreas = 0.0;
+        if (argc == 2)
+        {
+            printf("Enter the maximum number of rooms to search: ");
+            scanf("%d", &maxRooms);
+
+            printf("Max number of rooms is %d\n",maxRooms);fflush(stdout);
+
+
+            printf("Enter the maximum amount of treasure to search for: ");
+            scanf("%lf", &maxTreas);
+            char *ptr;
+            printf("Max amount of  treasure is %f\n",maxTreas);fflush(stdout);
+            maxTreasure = (float) maxTreas;
+        }
+        else if (argc == 3)
+        {
+            printf("Enter the maximum amount of treasure to search for: ");
+            scanf("%lf", &maxTreas);
+            char *ptr;
+            printf("Max amount of  treasure is %f\n",maxTreas);fflush(stdout);
+            maxTreasure = (float) maxTreas;
+        }
         for(int i = 1; i<argc; i++) //don't want to read argv[0]
         {//argv[i] is a string
             //in this program our arguments are NR, NC, gens, filename, print and pause
@@ -57,13 +79,13 @@ bool production(int argc, char* argv[])
 
                     aL= strtol(argv[i], &eptr, 10);
                     maxRooms = (int) aL;
-                    printf("Number of rooms is %d\n",maxRooms);fflush(stdout);
+                    printf("Max number of rooms is %d\n",maxRooms);fflush(stdout);
                     break;
                 case 3:
                     //this is maximum amount of treasure
-
-                    maxTreas = atof(argv[i]);
-                    printf("Amount of  treasure is %f\n",maxTreas);fflush(stdout);
+                    char *ptr;
+                    maxTreas = strtod(argv[i], &ptr);
+                    printf("Max amount of  treasure is %f\n",maxTreas);fflush(stdout);
                     maxTreasure = (float) maxTreas;
                     break;
 
@@ -94,19 +116,23 @@ bool production(int argc, char* argv[])
         //we'll start searching with room 0
         bool done = false;
         int searchedRooms = 0;
-        float foundTreasure = 0.0;
+        float foundTreasure = 0.0F;
         Room* roomBeingSearchedP = theRoomPs[0];
         //we set its searched field to true, and take its treasure
         roomBeingSearchedP->searched = true;
+        foundTreasure += roomBeingSearchedP->treasure;//Take the treasure
+
         //we record it in the history
         SearchResults* srP = (SearchResults*) malloc(sizeof(SearchResults));
         srP->roomNumber= 0;
         srP->treasure = roomBeingSearchedP->treasure;
+        savePayload2(historyP, srP); //NEW, save room to history list.
         if((srP->treasure <= maxTreas) && (maxRooms>0))
         {
             //here we are enqueueing room 0
             puts("Enqueuing room 0");
             //TODO: what else goes here?
+            savePayload(searchQ, roomBeingSearchedP); //Save this room into the search queue.
 
         }
 
@@ -123,23 +149,21 @@ bool production(int argc, char* argv[])
                     //if so, we check whether room has been searched
                     if(!(theRoomPs[col]->searched))
                     {//if it hasn't been searched
-                        printf("Room %d hasn't already been searched.\n", col);
+                        printf("Room %d hasn't already been searched.\n", col); fflush(stdout);
                         //we set it to searched
                         theRoomPs[col]->searched=true;
-                        if(true)//TODO:what's the condition?
-                            //we check whether we can take the treasure vs. limit
-                            //we check whether we've hit the room limit
+                        if((foundTreasure <= maxTreas) && (maxRooms>0))
                         {//we enqueue it for search
-                            foundTreasure += 0;//TODO what goes here?
-                            searchedRooms=0;//TODO what goes here?
+                            foundTreasure += theRoomPs[col]->treasure;
+                            searchedRooms+=1;
                             printf("found treasure updated to %f.\n", foundTreasure);
                             printf("enqueuing room %d.\n", col); fflush(stdout);
                             printf("Before enqueuing queue empty reports %d\n", isEmpty(searchQ));
-                            savePayload(0,0);//TODO: what goes here?
+                            savePayload(searchQ,theRoomPs[col]);
                             srP = (SearchResults*) malloc(sizeof(SearchResults));
                             srP->roomNumber=theRoomPs[col]->roomNumber;
                             srP->treasure = theRoomPs[col]->treasure;
-                            savePayload2(0,0);//TODO: what goes here?
+                            savePayload2(historyP,srP);
                             printf("After enqueuing, queue empty reports %d\n", isEmpty(searchQ));
                         }//check about search limits
                     }//room can still be searched
@@ -224,6 +248,7 @@ bool readFile(char* filename, int* nrooms, AdjMat* adjMP, Room** theRoomPs)
             //now set the treasures
             (*aRoomP)->treasure = tempTreas;
             (*aRoomP)->roomNumber = roomr;
+            (*aRoomP)->searched = false;
             printf("The treasure in room %d is %f\n", roomr, (*aRoomP)->treasure);
         }
         ok = true;

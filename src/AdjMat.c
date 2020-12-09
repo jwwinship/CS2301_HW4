@@ -32,6 +32,6 @@ int getEdge(AdjMat* adjMP, int row, int col)
 {
     int ncols = adjMP->n;
     int* arrayBeginning = adjMP->edgesP;
-    int returnValue = *(arrayBeginning + (ncols*row) +col);
+    int returnValue = *(arrayBeginning + (ncols*row) +col); //Wrong value for test.
     return returnValue;
 }
