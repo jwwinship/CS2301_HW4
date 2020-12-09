@@ -10,6 +10,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+//Testing CHanges
 bool isEmpty(LLNode* lp)
 {
     bool ans = false;
